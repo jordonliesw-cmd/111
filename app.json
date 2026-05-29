@@ -1,0 +1,1 @@
+{\n  \"pages\": [\n    \"pages/index/index\"\n  ],\n  \"window\": {\n    \"backgroundTextStyle\": \"light\",\n    \"navigationBarBackgroundColor\": \"#2c2c2c\",\n    \"navigationBarTitleText\": \"狂暴老奶\",\n    \"navigationBarTextStyle\": \"white\"\n  },\n  \"style\": \"v2\",\n  \"singlePage\": {}\n}\n
