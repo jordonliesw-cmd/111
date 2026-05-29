@@ -17,21 +17,30 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .menu-content {
-  background-color: #2c2c2c;
+  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
   border: 4px solid #ff6b00;
   border-radius: 8px;
   padding: 40px 30px;
   text-align: center;
-  max-width: 300px;
+  max-width: 350px;
   width: 90%;
+  margin: 20px auto;
+}
+
+.leaderboard-content,
+.achievements-content {
+  max-width: 380px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .game-title {
@@ -58,13 +67,25 @@ canvas {
   margin-bottom: 20px;
 }
 
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffcc00;
+  display: block;
+  margin: 15px 0 10px 0;
+  text-align: left;
+}
+
 /* 按钮样式 */
 .btn-start,
 .btn-restart,
 .btn-instructions,
+.btn-leaderboard,
+.btn-achievements,
 .btn-back,
 .btn-menu,
-.btn-continue {
+.btn-continue,
+.difficulty-btn {
   width: 100%;
   padding: 12px 20px;
   margin-bottom: 10px;
@@ -81,9 +102,12 @@ canvas {
 .btn-start:active,
 .btn-restart:active,
 .btn-instructions:active,
+.btn-leaderboard:active,
+.btn-achievements:active,
 .btn-back:active,
 .btn-menu:active,
-.btn-continue:active {
+.btn-continue:active,
+.difficulty-btn:active {
   background-color: #ff8c00;
   transform: scale(0.98);
 }
@@ -98,6 +122,36 @@ canvas {
   background-color: #888;
 }
 
+/* 难度按钮 */
+.difficulty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.difficulty-btn.easy {
+  background-color: #00aa00;
+}
+
+.difficulty-btn.normal {
+  background-color: #ff6b00;
+}
+
+.difficulty-btn.hard {
+  background-color: #ff0000;
+}
+
+.difficulty-btn.insane {
+  background-color: #8800ff;
+}
+
+.difficulty-desc {
+  font-size: 12px;
+  margin-top: 5px;
+  opacity: 0.9;
+}
+
 /* HUD */
 .hud {
   position: fixed;
@@ -108,8 +162,9 @@ canvas {
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
   z-index: 500;
+  flex-wrap: wrap;
 }
 
 .hud-left,
@@ -125,9 +180,31 @@ canvas {
   color: #888;
 }
 
+.difficulty-label {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
 .hud-value {
   font-size: 18px;
   color: #ff6b00;
+  font-weight: bold;
+}
+
+.weapon-info {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ffcc00;
+  border-radius: 4px;
+  padding: 10px 15px;
+  z-index: 100;
+}
+
+.weapon-type {
+  color: #ffcc00;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -142,9 +219,32 @@ canvas {
 
 .stat-line {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
   margin: 8px 0;
+}
+
+/* 新解锁成就 */
+.new-achievements {
+  margin: 15px 0;
+  background-color: rgba(255, 200, 0, 0.2);
+  border: 2px solid #ffcc00;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.achievement-unlock-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffcc00;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.unlock-item {
+  color: #fff;
+  font-size: 14px;
+  margin: 5px 0;
 }
 
 /* 说明文本 */
@@ -165,6 +265,95 @@ canvas {
   line-height: 1.6;
 }
 
+/* 排行榜 */
+.leaderboard-list {
+  text-align: left;
+  margin: 15px 0;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin: 8px 0;
+  background-color: rgba(255, 107, 0, 0.1);
+  border-radius: 4px;
+  border-left: 4px solid #ff6b00;
+}
+
+.rank {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffcc00;
+  min-width: 40px;
+  text-align: center;
+}
+
+.score-info {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.score-name {
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.score-detail {
+  display: block;
+  color: #888;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* 成就系统 */
+.achievements-list {
+  text-align: left;
+  margin: 15px 0;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin: 8px 0;
+  background-color: rgba(255, 200, 0, 0.1);
+  border-radius: 4px;
+  border-left: 4px solid #ffcc00;
+  transition: all 0.3s ease;
+}
+
+.achievement-icon {
+  font-size: 28px;
+  margin-right: 12px;
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-name {
+  display: block;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.achievement-desc {
+  display: block;
+  color: #888;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.achievement-status {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffcc00;
+}
+
 /* 升级菜单 */
 .upgrade-overlay {
   position: fixed;
@@ -172,21 +361,23 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .upgrade-content {
-  background-color: #2c2c2c;
+  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
   border: 4px solid #ffcc00;
   border-radius: 8px;
   padding: 30px 20px;
   text-align: center;
-  max-width: 320px;
+  max-width: 360px;
   width: 95%;
+  margin: 20px auto;
 }
 
 .upgrade-title {
@@ -209,7 +400,7 @@ canvas {
 .upgrade-options {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .upgrade-btn {
@@ -220,14 +411,18 @@ canvas {
   color: #fff;
   border: 2px solid #ffcc00;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   text-align: left;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.weapon-btn {
+  border-color: #ff6b00;
 }
 
 .upgrade-btn:active {
@@ -236,7 +431,20 @@ canvas {
   transform: scale(0.98);
 }
 
-.upgrade-cost {
+.upgrade-desc {
   font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.upgrade-cost {
+  font-size: 11px;
   opacity: 0.7;
+  margin-top: 4px;
+}
+
+.btn-continue {
+  background-color: #ffcc00;
+  color: #000;
+  margin-top: 10px;
 }

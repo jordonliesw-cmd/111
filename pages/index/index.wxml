@@ -1,15 +1,19 @@
 <view class="container">
-  <canvas id="gameCanvas" canvas-id="gameCanvas" style="width: 100%; height: 100vh;" bingtap="handleCanvasTap"></canvas>
+  <canvas id="gameCanvas" canvas-id="gameCanvas" style="width: 100%; height: 100vh;" bindtap="handleCanvasTap"></canvas>
   
+  <!-- 主菜单 -->
   <view wx:if="{{gameState === 'menu'}}" class="menu-overlay">
     <view class="menu-content">
       <text class="game-title">🔫 狂暴老奶 🔫</text>
       <text class="game-subtitle">Grandma Rampage</text>
       <button class="btn-start" bindtap="startGame">开始游戏</button>
       <button class="btn-instructions" bindtap="showInstructions">游戏说明</button>
+      <button class="btn-leaderboard" bindtap="showLeaderboard">排行榜</button>
+      <button class="btn-achievements" bindtap="showAchievements">成就</button>
     </view>
   </view>
 
+  <!-- 游戏说明 -->
   <view wx:if="{{gameState === 'instructions'}}" class="menu-overlay">
     <view class="menu-content">
       <text class="menu-title">游戏说明</text>
@@ -17,28 +21,97 @@
         <text>• 点击屏幕移动老奶奶</text>
         <text>• 自动射击靠近的怪兽</text>
         <text>• 击杀怪兽获得升级点数</text>
-        <text>• 升级武器和生命值</text>
+        <text>• 升级武器和属性</text>
         <text>• 存活尽可能多的波次</text>
+        <text>• 击败BOSS获得奖励</text>
+        <text>• 收集掉落物品</text>
       </view>
       <button class="btn-back" bindtap="backToMenu">返回菜单</button>
     </view>
   </view>
 
+  <!-- 难度选择 -->
+  <view wx:if="{{gameState === 'selectDifficulty'}}" class="menu-overlay">
+    <view class="menu-content">
+      <text class="menu-title">选择难度</text>
+      <button class="difficulty-btn easy" bindtap="startGameWithDifficulty" data-difficulty="easy">
+        😊 简单
+        <text class="difficulty-desc">敌人较弱，升级更快</text>
+      </button>
+      <button class="difficulty-btn normal" bindtap="startGameWithDifficulty" data-difficulty="normal">
+        😐 普通
+        <text class="difficulty-desc">平衡的挑战</text>
+      </button>
+      <button class="difficulty-btn hard" bindtap="startGameWithDifficulty" data-difficulty="hard">
+        😡 困难
+        <text class="difficulty-desc">强大的敌人和BOSS</text>
+      </button>
+      <button class="difficulty-btn insane" bindtap="startGameWithDifficulty" data-difficulty="insane">
+        💀 地狱
+        <text class="difficulty-desc">终极挑战！</text>
+      </button>
+      <button class="btn-back" bindtap="backToMenu">返回菜单</button>
+    </view>
+  </view>
+
+  <!-- 排行榜 -->
+  <view wx:if="{{gameState === 'leaderboard'}}" class="menu-overlay">
+    <view class="menu-content leaderboard-content">
+      <text class="menu-title">🏆 排行榜 🏆</text>
+      <view class="leaderboard-list">
+        <view wx:for="{{leaderboard}}" wx:key="index" class="leaderboard-item">
+          <text class="rank">{{index + 1}}</text>
+          <view class="score-info">
+            <text class="score-name">{{item.name}}</text>
+            <text class="score-detail">波次: {{item.wave}} | 分数: {{item.score}}</text>
+          </view>
+        </view>
+      </view>
+      <button class="btn-back" bindtap="backToMenu">返回菜单</button>
+    </view>
+  </view>
+
+  <!-- 成就系统 -->
+  <view wx:if="{{gameState === 'achievements'}}" class="menu-overlay">
+    <view class="menu-content achievements-content">
+      <text class="menu-title">🌟 成就 🌟</text>
+      <view class="achievements-list">
+        <view wx:for="{{achievements}}" wx:key="index" class="achievement-item" style="opacity: {{item.unlocked ? 1 : 0.5}}">
+          <text class="achievement-icon">{{item.icon}}</text>
+          <view class="achievement-info">
+            <text class="achievement-name">{{item.name}}</text>
+            <text class="achievement-desc">{{item.description}}</text>
+          </view>
+          <text class="achievement-status">{{item.unlocked ? '✓' : '🔒'}}</text>
+        </view>
+      </view>
+      <button class="btn-back" bindtap="backToMenu">返回菜单</button>
+    </view>
+  </view>
+
+  <!-- 游戏中HUD -->
   <view wx:if="{{gameState === 'playing'}}" class="hud">
     <view class="hud-left">
-      <text class="hud-label">生命值:</text>
+      <text class="hud-label">生命值</text>
       <text class="hud-value">{{playerHealth}}/{{playerMaxHealth}}</text>
+      <text class="hud-label difficulty-label">难度: {{difficultyName}}</text>
     </view>
     <view class="hud-center">
       <text class="hud-label">波次</text>
       <text class="hud-value">{{wave}}</text>
+      <text class="hud-label">{{isBossWave ? '🔴 BOSS关' : ''}}</text>
     </view>
     <view class="hud-right">
       <text class="hud-label">分数</text>
       <text class="hud-value">{{score}}</text>
+      <text class="hud-label">升级点: {{upgradePoints}}</text>
+    </view>
+    <view class="weapon-info">
+      <text class="weapon-type">武器: {{currentWeaponName}}</text>
     </view>
   </view>
 
+  <!-- 游戏结束 -->
   <view wx:if="{{gameState === 'gameOver'}}" class="menu-overlay">
     <view class="menu-content">
       <text class="game-title">游戏结束</text>
@@ -46,34 +119,62 @@
         <text class="stat-line">最后波次: {{wave}}</text>
         <text class="stat-line">总分数: {{score}}</text>
         <text class="stat-line">击杀数: {{kills}}</text>
+        <text class="stat-line">难度: {{difficultyName}}</text>
+        <text class="stat-line">获得金币: {{coins}}</text>
+      </view>
+      <view wx:if="{{newAchievements.length > 0}}" class="new-achievements">
+        <text class="achievement-unlock-title">🎉 新解锁成就</text>
+        <view wx:for="{{newAchievements}}" wx:key="index" class="unlock-item">
+          <text>{{item.icon}} {{item.name}}</text>
+        </view>
       </view>
       <button class="btn-restart" bindtap="startGame">重新开始</button>
       <button class="btn-menu" bindtap="backToMenu">返回菜单</button>
     </view>
   </view>
 
+  <!-- 升级菜单 -->
   <view wx:if="{{showUpgrade}}" class="upgrade-overlay">
     <view class="upgrade-content">
       <text class="upgrade-title">⭐ 升级选择 ⭐</text>
       <text class="upgrade-points">升级点数: {{upgradePoints}}</text>
+      
+      <!-- 武器选择 -->
+      <text class="section-title">🔫 武器系统</text>
       <view class="upgrade-options">
-        <button class="upgrade-btn" bindtap="upgrade" data-type="damage">
-          🔴 攻击力 +1
+        <button class="upgrade-btn weapon-btn" wx:for="{{weaponOptions}}" wx:key="index" 
+                bindtap="upgradeWeapon" data-index="{{index}}">
+          {{item.icon}} {{item.name}}
+          <text class="upgrade-desc">{{item.description}}</text>
+          <text class="upgrade-cost">花费: {{item.cost}}点</text>
+        </button>
+      </view>
+
+      <!-- 属性升级 -->
+      <text class="section-title">💪 属性升级</text>
+      <view class="upgrade-options">
+        <button class="upgrade-btn" bindtap="upgradeAttr" data-type="damage">
+          🔴 攻击力 +2
           <text class="upgrade-cost">花费: 1点</text>
         </button>
-        <button class="upgrade-btn" bindtap="upgrade" data-type="fireRate">
+        <button class="upgrade-btn" bindtap="upgradeAttr" data-type="fireRate">
           ⚡ 射速 +1
           <text class="upgrade-cost">花费: 1点</text>
         </button>
-        <button class="upgrade-btn" bindtap="upgrade" data-type="health">
-          💚 生命值 +5
+        <button class="upgrade-btn" bindtap="upgradeAttr" data-type="health">
+          💚 生命值 +10
           <text class="upgrade-cost">花费: 1点</text>
         </button>
-        <button class="upgrade-btn" bindtap="upgrade" data-type="range">
-          🎯 射程 +50px
-          <text class="upgrade-cost">花费: 2点</text>
+        <button class="upgrade-btn" bindtap="upgradeAttr" data-type="range">
+          🎯 射程 +30px
+          <text class="upgrade-cost">花费: 1点</text>
+        </button>
+        <button class="upgrade-btn" bindtap="upgradeAttr" data-type="speed">
+          💨 速度 +1
+          <text class="upgrade-cost">花费: 1点</text>
         </button>
       </view>
+
       <button class="btn-continue" bindtap="continueGame">继续游戏</button>
     </view>
   </view>
