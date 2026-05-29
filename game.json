@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2c2c2c",
+    "navigationBarTitleText": "狂暴老奶",
+    "navigationBarTextStyle": "white"
+  },
+  "style": "v2",
+  "singlePage": {}
+}

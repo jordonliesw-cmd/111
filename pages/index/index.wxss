@@ -1,0 +1,242 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: #1a1a1a;
+  overflow: hidden;
+  position: relative;
+}
+
+canvas {
+  display: block;
+}
+
+/* 菜单覆盖层 */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.menu-content {
+  background-color: #2c2c2c;
+  border: 4px solid #ff6b00;
+  border-radius: 8px;
+  padding: 40px 30px;
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+}
+
+.game-title {
+  font-size: 40px;
+  font-weight: bold;
+  color: #ff6b00;
+  display: block;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.game-subtitle {
+  font-size: 16px;
+  color: #888;
+  display: block;
+  margin-bottom: 30px;
+}
+
+.menu-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff6b00;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* 按钮样式 */
+.btn-start,
+.btn-restart,
+.btn-instructions,
+.btn-back,
+.btn-menu,
+.btn-continue {
+  width: 100%;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  background-color: #ff6b00;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-start:active,
+.btn-restart:active,
+.btn-instructions:active,
+.btn-back:active,
+.btn-menu:active,
+.btn-continue:active {
+  background-color: #ff8c00;
+  transform: scale(0.98);
+}
+
+.btn-back,
+.btn-menu {
+  background-color: #666;
+}
+
+.btn-back:active,
+.btn-menu:active {
+  background-color: #888;
+}
+
+/* HUD */
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+}
+
+.hud-left,
+.hud-center,
+.hud-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hud-label {
+  font-size: 12px;
+  color: #888;
+}
+
+.hud-value {
+  font-size: 18px;
+  color: #ff6b00;
+  font-weight: bold;
+}
+
+/* 游戏统计 */
+.stats {
+  margin: 20px 0;
+  text-align: left;
+  background-color: rgba(255, 107, 0, 0.1);
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.stat-line {
+  display: block;
+  font-size: 18px;
+  color: #fff;
+  margin: 8px 0;
+}
+
+/* 说明文本 */
+.instructions-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin: 20px 0;
+  background-color: rgba(255, 107, 0, 0.1);
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.instructions-text text {
+  color: #fff;
+  font-size: 14px;
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+/* 升级菜单 */
+.upgrade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.upgrade-content {
+  background-color: #2c2c2c;
+  border: 4px solid #ffcc00;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  max-width: 320px;
+  width: 95%;
+}
+
+.upgrade-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffcc00;
+  display: block;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.upgrade-points {
+  font-size: 16px;
+  color: #ff6b00;
+  display: block;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.upgrade-options {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.upgrade-btn {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: #444;
+  color: #fff;
+  border: 2px solid #ffcc00;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upgrade-btn:active {
+  background-color: #ffcc00;
+  color: #000;
+  transform: scale(0.98);
+}
+
+.upgrade-cost {
+  font-size: 12px;
+  opacity: 0.7;
+}

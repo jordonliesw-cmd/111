@@ -1,0 +1,39 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "grandma-rampage",
+  "description": "微信小游戏 - 狂暴老奶",
+  "appid": "wx00000000000000",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "nodeModules": false
+  },
+  "compileType": "game",
+  "libVersion": "2.20.1",
+  "scriptsuffixversion": 0,
+  "preloadLocalPackages": [],
+  "packNpmManually": false,
+  "packNpmRelationList": [],
+  "scripts": {},
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": -1,
+      "list": []
+    }
+  }
+}

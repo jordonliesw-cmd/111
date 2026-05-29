@@ -1,0 +1,80 @@
+<view class="container">
+  <canvas id="gameCanvas" canvas-id="gameCanvas" style="width: 100%; height: 100vh;" bingtap="handleCanvasTap"></canvas>
+  
+  <view wx:if="{{gameState === 'menu'}}" class="menu-overlay">
+    <view class="menu-content">
+      <text class="game-title">🔫 狂暴老奶 🔫</text>
+      <text class="game-subtitle">Grandma Rampage</text>
+      <button class="btn-start" bindtap="startGame">开始游戏</button>
+      <button class="btn-instructions" bindtap="showInstructions">游戏说明</button>
+    </view>
+  </view>
+
+  <view wx:if="{{gameState === 'instructions'}}" class="menu-overlay">
+    <view class="menu-content">
+      <text class="menu-title">游戏说明</text>
+      <view class="instructions-text">
+        <text>• 点击屏幕移动老奶奶</text>
+        <text>• 自动射击靠近的怪兽</text>
+        <text>• 击杀怪兽获得升级点数</text>
+        <text>• 升级武器和生命值</text>
+        <text>• 存活尽可能多的波次</text>
+      </view>
+      <button class="btn-back" bindtap="backToMenu">返回菜单</button>
+    </view>
+  </view>
+
+  <view wx:if="{{gameState === 'playing'}}" class="hud">
+    <view class="hud-left">
+      <text class="hud-label">生命值:</text>
+      <text class="hud-value">{{playerHealth}}/{{playerMaxHealth}}</text>
+    </view>
+    <view class="hud-center">
+      <text class="hud-label">波次</text>
+      <text class="hud-value">{{wave}}</text>
+    </view>
+    <view class="hud-right">
+      <text class="hud-label">分数</text>
+      <text class="hud-value">{{score}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{gameState === 'gameOver'}}" class="menu-overlay">
+    <view class="menu-content">
+      <text class="game-title">游戏结束</text>
+      <view class="stats">
+        <text class="stat-line">最后波次: {{wave}}</text>
+        <text class="stat-line">总分数: {{score}}</text>
+        <text class="stat-line">击杀数: {{kills}}</text>
+      </view>
+      <button class="btn-restart" bindtap="startGame">重新开始</button>
+      <button class="btn-menu" bindtap="backToMenu">返回菜单</button>
+    </view>
+  </view>
+
+  <view wx:if="{{showUpgrade}}" class="upgrade-overlay">
+    <view class="upgrade-content">
+      <text class="upgrade-title">⭐ 升级选择 ⭐</text>
+      <text class="upgrade-points">升级点数: {{upgradePoints}}</text>
+      <view class="upgrade-options">
+        <button class="upgrade-btn" bindtap="upgrade" data-type="damage">
+          🔴 攻击力 +1
+          <text class="upgrade-cost">花费: 1点</text>
+        </button>
+        <button class="upgrade-btn" bindtap="upgrade" data-type="fireRate">
+          ⚡ 射速 +1
+          <text class="upgrade-cost">花费: 1点</text>
+        </button>
+        <button class="upgrade-btn" bindtap="upgrade" data-type="health">
+          💚 生命值 +5
+          <text class="upgrade-cost">花费: 1点</text>
+        </button>
+        <button class="upgrade-btn" bindtap="upgrade" data-type="range">
+          🎯 射程 +50px
+          <text class="upgrade-cost">花费: 2点</text>
+        </button>
+      </view>
+      <button class="btn-continue" bindtap="continueGame">继续游戏</button>
+    </view>
+  </view>
+</view>
